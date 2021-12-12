@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
-app.use(morgan('tiny'))
+
+morgan.token('body', (request, response) => JSON.stringify(request.body));
+
+app.use(morgan(':method :url :status :req[content-length] - :response-time ms :body'));
 
 app.use(express.json())
 
@@ -29,7 +32,7 @@ let phonebook = [
 ]
 
 app.get('/api/persons', (request, response) => {
-  response.status(200).send(notes)
+  response.status(200).send(phonebook)
 })
 
 app.get('/api/info', (request, response) => {
