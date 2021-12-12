@@ -47,6 +47,41 @@ app.get('/api/persons/:id', (request, response) => {
   } else {
     response.status(404).send()
   }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+
+  phonebook = phonebook.filter(person => person.id !== id);
+
+  response.status(204).end()
+})
+
+app.post('/api/persons/', (request, response) => {
+  const id = Math.floor(Math.random() * 999999999999999)
+  const body = request.body
+
+  if (!body.name) {
+    return response.status(400).json({
+      error: 'name missing'
+    })
+  }
+
+  if (!body.number) {
+    return response.status(400).json({
+      error: 'number missing'
+    })
+  }
+
+  newPerson = {
+    id: id,
+    name: body.name,
+    number: body.number
+  }
+
+  phonebook = phonebook.concat(newPerson)
+
+  response.json(phonebook)
 
 })
 
