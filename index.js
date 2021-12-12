@@ -73,6 +73,12 @@ app.post('/api/persons/', (request, response) => {
     })
   }
 
+  if (phonebook.some(person => person.name === body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
+  }
+
   newPerson = {
     id: id,
     name: body.name,
