@@ -29,6 +29,12 @@ let notes = [
 app.get('/api/persons', (request, response) => {
   response.status(200).send(notes)
 })
+app.get('/api/info', (request, response) => {
+  response.status(200).send(`
+  <h1>Phonebook has info for ${notes.length} people </h1>
+  <h2>${new Date()}</h2>
+  `)
+})
 
 const PORT = 3001
 app.listen(PORT)
