@@ -12,7 +12,7 @@ mongoose.connect(url)
 
 const phonebookSchema = new mongoose.Schema({
   name: String,
-  phone: String
+  number: String
 })
 
 phonebookSchema.set('toJSON', {
@@ -25,27 +25,6 @@ phonebookSchema.set('toJSON', {
 
 const Person = mongoose.model('Person', phonebookSchema);
 
-/* if (!name) {
-  return (
-    Person.find({}).then(result => {
-      console.log('phonebook:')
-      result.forEach(person => {
-        console.log(`${person.name} ${person.phone}`)
-      })
-      mongoose.connection.close()
-    })
-  )
-} 
 
-const person = new Person({
-  name: name,
-  phone: phoneNumber,
-})
-
-person.save().then(result => {
-  console.log(`added ${name} number ${phoneNumber} to phonebook`)
-  mongoose.connection.close()
-})
-*/
 
 module.exports = Person

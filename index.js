@@ -77,7 +77,7 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons/', (request, response) => {
-  const id = Math.floor(Math.random() * 999999999999999)
+
   const body = request.body
 
   if (!body.name) {
@@ -98,15 +98,18 @@ app.post('/api/persons/', (request, response) => {
     })
   }
 
-  newPerson = {
-    id: id,
+
+  const person = new Person({
     name: body.name,
-    number: body.number
-  }
+    number: body.number,
+  })
 
-  phonebook = phonebook.concat(newPerson)
+  person.save().then(result => {
 
-  response.json(phonebook)
+    console.log(`added ${person.name} number ${person.number} to phonebook`)
+    response.json(result)
+  })
+
 
 })
 
