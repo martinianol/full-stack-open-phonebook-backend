@@ -68,7 +68,7 @@ app.get('/api/persons/:id', (request, response) => {
   }*/
 })
 
-app.delete('/api/persons/:id', (request, response, error) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
 
   Person.findByIdAndRemove(id)
@@ -77,8 +77,7 @@ app.delete('/api/persons/:id', (request, response, error) => {
 
 })
 
-app.post('/api/persons/', (request, response) => {
-
+app.post('/api/persons/', (request, response, next) => {
   const body = request.body
 
   if (!body.name) {
@@ -99,18 +98,34 @@ app.post('/api/persons/', (request, response) => {
     })
   }
 
-
   const person = new Person({
     name: body.name,
     number: body.number,
   })
 
-  person.save().then(result => {
+  person.save()
+    .then(result => {
+      console.log(`added ${person.name} number ${person.number} to phonebook`)
+      response.json(result)
+    })
+    .catch(error => next(error))
+})
 
-    console.log(`added ${person.name} number ${person.number} to phonebook`)
-    response.json(result)
-  })
+app.put('/api/persons/:id', (request, response, next) => {
+  const id = request.params.id
 
+  const body = request.body
+
+  const person = {
+    name: body.name,
+    number: body.number
+  }
+
+  Person.findByIdAndUpdate(id, person, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 
 })
 
