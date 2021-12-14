@@ -38,34 +38,40 @@ let phonebook = [
   }
 ]
 
-app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons)
-  })
+app.get('/api/persons', (request, response, next) => {
+  Person.find({})
+    .then(persons => {
+      response.json(persons)
+    })
+    .catch(error => next(error))
 })
 
 
-app.get('/api/info', (request, response) => {
-  response.status(200).send(`
-  <h1>Phonebook has info for ${phonebook.length} people </h1>
-  <h2>${new Date()}</h2>
-  `)
+app.get('/api/info', (request, response, next) => {
+
+  Person.find({})
+    .then(persons => {
+      response.status(200).send(`
+      <h1>Phonebook has info for ${persons.length} people </h1>
+      <h2>${new Date()}</h2>
+      `)
+    })
+    .catch(error => next(error))
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
 
   const id = request.params.id
   Person.findById(id)
     .then(person => {
-      response.json(person)
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
     })
-  /* const result = phonebook.find(person => person.id === id)
+    .catch(error => next(error))
 
-  if (result) {
-    response.status(200).json(result)
-  } else {
-    response.status(404).send()
-  }*/
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
