@@ -147,8 +147,16 @@ const errorHandler = (error, request, response, next) => {
   }
 
   if (error.name === 'ValidationError') {
+    return response.status(400).send(
+      { error: error.message }
+    )
+  }
+
+
+
+  if (error._message === "Person validation failed") {
     return response.status(409).send({
-      error: 'expected name to be unique'
+      error: error
     })
   }
 
