@@ -5,12 +5,12 @@ const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/phonebook')
 
-morgan.token('body', (request, response) => JSON.stringify(request.body));
+morgan.token('body', (request, response) => JSON.stringify(request.body))
 
 /**
  * Middlewares
  */
-app.use(morgan(':method :url :status :req[content-length] - :response-time ms :body'));
+app.use(morgan(':method :url :status :req[content-length] - :response-time ms :body'))
 app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
@@ -83,7 +83,7 @@ app.post('/api/persons/', (request, response, next) => {
 
   const person = new Person({
     name: body.name,
-    number: body.number,
+    number: body.number
   })
 
   person.save()
@@ -131,7 +131,7 @@ const errorHandler = (error, request, response, next) => {
 
 
 
-  if (error._message === "Person validation failed") {
+  if (error._message === 'Person validation failed') {
     return response.status(409).send({
       error: error
     })
